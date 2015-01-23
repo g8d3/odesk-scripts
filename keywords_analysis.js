@@ -11,8 +11,23 @@ $.get($('.oVisitedLink:first')[0].href, function(r){
   console.log(x=$(r).find('#jobActivitySection tr:contains(Applicants) td:last'))
 })
 
+// x and y used as global variables for inspection
+// x element found
+// y AJAX response
+// f CSS selector which will be extracted from y and saved as x
+// a is an aggregator, to build something you want when iterating through links
 
 // one line
-$('.oVisitedLink').map(function(i,e) {$.get(e.href,function(r){ a=$(r).filter(':has(#jobActivitySection)').find('#jobActivitySection tr:contains(Applicants) td:last').html(); a= (a||'').trim(); $(e).after(a)  })})
 
-$.get($('.oVisitedLink:first')[0].href, function(r){ y=r;console.log(x=$(r).filter('#jobActivitySection').find('tr:contains(Applicants) td:last').html().trim() })
+a=[];f='[name=sku]>p:first-of-type';$('.oVisitedLink').map(function(i,e) {$.get(e.href,function(r){ t=$(r).find(f).html(); t= (t||'').trim(); a.push(t);})})
+
+
+f='[name=sku]>p:first-of-type';$.get($('.oVisitedLink')[0].href, function(r){ y=r;x=$(r).find(f);})
+
+copy(a)
+
+// Ruby, count words
+// on pry:
+// 1. a=paste+enter
+// 2. then enter this line:
+h=Hash.new(0);a.join(' ').scan(/\w+/){|w| h[w]+=1}; h.sort_by{|k,v| v}.reverse
